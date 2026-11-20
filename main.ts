@@ -15,9 +15,10 @@ import { join } from 'node:path';
 
 // An X post address as X shows it: x.com or twitter.com (www. or mobile.
 // allowed), /status/<digits> or /i/web/status/<digits>. A query string or
-// fragment after the id is tolerated by the gate, but we keep it strict
-// here so a placeholder can never slip through by accident.
-const POST_URL = /^https:\/\/(www\.|mobile\.)?(x\.com|twitter\.com)\/(i\/web\/status\/|[A-Za-z0-9_]+\/status\/)\d+\/?$/;
+// fragment after the id is tolerated by the gate (X appends tracking
+// parameters such as ?s=20 to copied links), so it is accepted here too;
+// a placeholder still fails because it has no numeric status id.
+const POST_URL = /^https:\/\/(www\.|mobile\.)?(x\.com|twitter\.com)\/(i\/web\/status\/|[A-Za-z0-9_]+\/status\/)\d+\/?([?#].*)?$/;
 
 const BOT_DIR = process.env.MAKEFUN_BOT_DIR ?? '/bot';
 const OUTPUT_DIR = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
